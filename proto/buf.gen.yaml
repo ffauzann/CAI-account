@@ -1,0 +1,25 @@
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.33.0
+    out: gen
+    opt: paths=source_relative
+  - remote: buf.build/grpc/go:v1.3.0
+    out: gen
+    opt:
+      - require_unimplemented_servers=false
+      - paths=source_relative
+  - local: protoc-gen-grpc-gateway
+  # - remote: buf.build/grpc-ecosystem/gateway:v2.20.0 # Remote plugin doesn't support config file.
+    out: gen
+    opt:
+      - paths=source_relative
+      - grpc_api_configuration=gw.config.yaml
+  - remote: buf.build/grpc-ecosystem/openapiv2:v2.16.2
+    out: gen
+
+# Use this command if there is an issue occured regarding gateway config
+# protoc -I . \
+#          --grpc-gateway_out . \
+#          --grpc-gateway_opt paths=source_relative \
+#          --grpc-gateway_opt grpc_api_configuration=user.yml \
+#          user.proto

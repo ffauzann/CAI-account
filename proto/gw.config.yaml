@@ -1,0 +1,41 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    # Authentication
+    - selector: ffauzann.cai.authentication.AuthService.Register
+      post: /user/api/v1/g/users/register
+      body: "*"
+    - selector: ffauzann.cai.authentication.AuthService.RegisterV2
+      post: /user/api/v2/g/users/register
+      body: "*"
+    - selector: ffauzann.cai.authentication.AuthService.VerifyOTP
+      post: /user/api/v1/g/users/verify-otp
+      body: "*"
+    - selector: ffauzann.cai.authentication.AuthService.Login
+      post: /user/api/v1/g/users/login
+      body: "*"
+    - selector: ffauzann.cai.authentication.AuthService.LoginV2
+      post: /user/api/v2/g/users/login
+      body: "*"
+    - selector: ffauzann.cai.authentication.AuthService.RefreshToken
+      post: /user/api/v1/g/users/refresh-token
+      body: "*"
+
+    # User
+    - selector: ffauzann.cai.user.UserService.UpdatePasscode
+      put: /user/api/v1/g/users/passcode
+      body: "*"
+    - selector: ffauzann.cai.user.UserService.CloseUserAccount
+      post: /user/api/v1/g/users/close-account
+    - selector: ffauzann.cai.user.UserService.IsUserExist
+      post: /user/api/v1/g/users/is-exists
+      body: "*"
+
+    # Account
+    - selector: ffauzann.cai.account.AccountService.GetListAccount
+      get: /user/api/v1/g/accounts
+    - selector: ffauzann.cai.account.AccountService.UpdateBalance
+      put: /user/api/v1/g/accounts/balances
+      body: "*"

@@ -1,0 +1,38 @@
+syntax = "proto3";
+package ffauzann.cai.account;
+option go_package = "github.com/ffauzann/CAI-account/proto/gen";
+
+enum AccountCategory {
+    AC_UNSPECIFIED = 0;
+    AC_DEBIT = 1;
+    AC_CREDIT = 2;
+    AC_LOAN = 3;
+}
+
+message Account {
+    uint64 id = 1;
+    AccountCategory category = 2;
+    float balance = 3;
+}
+
+message GetListAccountRequest {}
+
+message GetListAccountResponse {
+    repeated Account accounts = 1;
+}
+
+message UpdateBalanceRequest {
+    uint64 source_account_id = 1;
+    uint64 destination_account_id = 2;
+    float amount = 3;
+}
+
+message UpdateBalanceResponse {
+    string status = 1;
+}
+
+service AccountService {
+    // Account
+    rpc GetListAccount(GetListAccountRequest) returns (GetListAccountResponse) {}
+    rpc UpdateBalance(UpdateBalanceRequest) returns (UpdateBalanceResponse) {}
+}

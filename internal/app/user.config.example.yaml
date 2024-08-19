@@ -1,0 +1,59 @@
+server:
+  grpc:
+    address: 0.0.0.0 # To run in host/k8s env
+    # address: cai-user # To run with docker
+    port: 30100
+  http:
+    address: 0.0.0.0 # To run in host/k8s env
+    # address: cai-user # To run with docker
+    port: 30101
+    timeout: 30s
+  logger:
+    format: json
+database:
+  sql:
+    driver: postgres
+    host: localhost # To run in host machine
+    # host: sql # To run within docker env
+    # host: 10.100.168.1 # To run within k8s env
+    port: 5432
+    schema: cai_user
+    username: <YOUR_USERNAME>
+    password: <YOUR_PASSWORD>
+    autoMigrate: true
+cache:
+  redis:
+    host: localhost # To run in host machine
+    # host: redis # To run within docker env
+    # host: 10.100.168.2 # To run within k8s env
+    port: 6379
+    db: 0
+    password: 
+app:
+  encryption:
+    cost: 10
+  auth:
+    excludedMethods:
+    - Login
+    - LoginV2
+    - Register
+    - RegisterV2
+    - RefreshToken
+    - VerifyOTP
+    - IsUserExist
+  dependency:
+    whatsapp:
+      senderURL: ""
+      xAccessKey: ""
+      instanceID: ""
+      mockOTP: 121212
+      registerOTP:
+        content: "Jangan berikan kode OTP pada siapapun! Berikut kode OTP Anda: %s"
+        maxRetry: 5
+        exp: 15m
+        cooldown: 30s
+      loginOTP:
+        content: "Jangan berikan kode OTP pada siapapun! Berikut kode OTP Anda: %s"
+        maxRetry: 5
+        exp: 15m
+        cooldown: 30s

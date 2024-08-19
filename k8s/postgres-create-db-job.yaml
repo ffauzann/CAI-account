@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-db-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: psql
+        image: postgres:14.12
+        env:
+        - name: PGPASSWORD
+          value: "some_password"  # Postgres password
+        command: ["psql"]
+        args: ["-h", "postgres", "-U", "svc_user", "-c", "CREATE DATABASE IF NOT EXISTS cai_user;"]
+      restartPolicy: OnFailure

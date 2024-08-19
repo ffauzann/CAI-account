@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+spec:
+  selector:
+    app: user
+  ports:
+  - name: grpc
+    port: 30100
+    nodePort: 30100
+  - name: http
+    port: 30101
+    nodePort: 30101
+  type: NodePort

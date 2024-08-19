@@ -1,0 +1,31 @@
+linters:
+  enable-all: true
+  disable:
+    - nakedret
+    - nlreturn
+    - depguard
+    - lll
+    - wsl
+    - gci
+    - testpackage
+    - tagalign
+    - tagliatelle
+    - nolintlint
+    - nosprintfhostport
+  fast: true
+  # presets:
+    # - test
+
+linters-settings:
+  funlen:
+    lines: 60
+    statements: 40
+    ignore-comments: true
+
+issues:
+  exclude-rules:
+    - path: (.+)_test.go
+      linters: # Exclude listed linters under test files.
+        - funlen
+        - dupl
+        - nestif

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: user
+          image: <your_username>/user:0.0.1 # This tag must be same as docker tag
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 30100
+            - containerPort: 30101
+          livenessProbe:
+            httpGet:
+              path: /user/api/v1/r/utilities/healthz
+              port: 30101
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /user/api/v1/r/utilities/healthz
+              port: 30101
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          resources: # Apply the same reasource in every pods
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

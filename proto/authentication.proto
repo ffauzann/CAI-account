@@ -1,0 +1,97 @@
+syntax = "proto3";
+package ffauzann.cai.authentication;
+option go_package = "github.com/ffauzann/CAI-account/proto/gen";
+
+import "google/protobuf/any.proto";
+
+message RegisterRequest {
+    string name = 1;
+    string username = 2;
+    string email = 3;
+    string phone_number = 4;
+    string password = 5;
+}
+
+enum RegisterStatusCode {
+    RSC_UNSPECIFIED = 0;
+    RSC_SUCCEED = 1;
+    RSC_FAILED = 2;
+}
+
+message RegisterResponse {
+    RegisterStatusCode code = 1;
+    repeated string reasons = 2;
+}
+
+message RegisterV2Request {
+    string name = 1;
+    string username = 2;
+    string email = 3;
+    string phone_number = 4;
+    string passcode = 5;
+}
+
+message RegisterV2Response {
+    string status = 1;
+    string auth_code = 2;
+}
+
+enum VerifyOTPAction {
+    VOTPA_UNSPECIFIED = 0;
+    VOTPA_REGISTER = 1;
+    VOTPA_LOGIN = 2;
+}
+
+message VerifyOTPRequest {
+    VerifyOTPAction action = 1;
+    string phone_number = 2;
+    string auth_code = 3;
+    string otp = 4;
+}
+
+message VerifyOTPResponse {
+    string status = 1;
+    map<string, google.protobuf.Any> data = 2;
+}
+
+message LoginRequest {
+    // user_id can be filled by email or phone number
+    string user_id = 1;
+    string password = 2;
+    bool remember_me = 3;
+}
+
+message LoginResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message LoginV2Request {
+    string phone_number = 1;
+    string passcode = 2;
+    bool extend_token_exp = 3;
+}
+
+message LoginV2Response {
+    string status = 1;
+    string auth_code = 2;
+}
+
+message RefreshTokenRequest {
+    string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+service AuthService {
+    // Authentication
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc RegisterV2(RegisterV2Request) returns (RegisterV2Response) {}
+    rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse) {}
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc LoginV2(LoginV2Request) returns (LoginV2Response) {}
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+}

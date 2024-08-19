@@ -1,0 +1,31 @@
+services:
+  cai-user:
+    build: 
+      context: .
+    restart: on-failure
+    ports:
+      - 30100:30100 
+      - 30101:30101
+    depends_on:
+      sql:
+        condition: service_healthy
+
+  sql:
+    image: postgres:14.12
+    ports:
+      - 5432:5432
+    environment:
+    - POSTGRES_ROOT_PASSWORD=root_password_here
+    - POSTGRES_DB=cai_user
+    - POSTGRES_USER=svc_user
+    - POSTGRES_PASSWORD=some_password
+    healthcheck: # https://docs.docker.com/engine/reference/builder/#healthcheck
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7.2.1
+    ports:
+      - 6379:6379

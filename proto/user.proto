@@ -1,0 +1,36 @@
+syntax = "proto3";
+package ffauzann.cai.user;
+option go_package = "github.com/ffauzann/CAI-account/proto/gen";
+
+import "google/protobuf/empty.proto";
+
+message CloseUserAccountResponse {
+    uint64 user_id = 1;
+    string status = 2;
+}
+
+message UpdatePasscodeRequest {
+    string old_passcode = 1;
+    string new_passcode = 2;
+}
+
+message UpdatePasscodeResponse {
+    uint64 user_id = 1;
+    string status = 2;
+}
+
+message IsUserExistRequest {
+    string email = 1;
+    string phone_number = 2;
+}
+
+message IsUserExistResponse {
+    bool is_exist = 1;
+    repeated string reasons = 2;
+}
+
+service UserService {
+    rpc CloseUserAccount(google.protobuf.Empty) returns (CloseUserAccountResponse) {}
+    rpc UpdatePasscode(UpdatePasscodeRequest) returns (UpdatePasscodeResponse) {}
+    rpc IsUserExist(IsUserExistRequest) returns (IsUserExistResponse) {}
+}
